@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ReserveMeNOW</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>ReserveMeNOW</h1>
+      <h3>View All Reservations</h3>
+      <hr>
+      <a href="/add"><button type="button" class="btn btn-lg"><span class="glyphicon glyphicon-plus"></span> Add A Reservation</button></a>
+      <a href="/show"><button type="button" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-plus"></span> View The Reservations</button></a>
+      <a href="/"><button type="button" class="btn btn-lg"><span class="glyphicon glyphicon-plus"></span> Home</button></a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Current Reservation</strong></h3>
+          </div>
+          <div class="panel-body" id="reserved">
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Waiting List</strong></h3>
+          </div>
+          <div class="panel-body" id="waiting">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <h3><a href="/APIall">Peek Into The Back</a></h3>
+    </div>
+  </div>
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+      $.get("/APIall", function(data) {
+        if (data) {
+          for(var i=0; i< data.length; i++){
+            $hrmlBlock = createRes(data[i]);
+            if(i<6){
+              $("#reserved").append($hrmlBlock);
+            }else{
+              $("#waiting").append($hrmlBlock);
+            }
+          }
+        }
+      });
+    });
+
+  function createRes(currentRes,ctr){
+    // let seats = currentRes.seats
+    var reservationDiv = $("<div>")     
+                .attr("id", ctr)
+                .addClass(currentRes.side)
+                .html("Name: "+currentRes.name+" Seats: "+ currentRes.seats+" Phone: "+currentRes.phone)
+    return reservationDiv;
+  }
+  </script>
+</body>
+</html>
