@@ -49,17 +49,22 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
-      $.get("/APIall", function(data) {
-        if (data) {
-          for(var i=0; i< data.length; i++){
-            $hrmlBlock = createRes(data[i]);
-            if(i<6){
-              $("#reserved").append($hrmlBlock);
-            }else{
-              $("#waiting").append($hrmlBlock);
+      $.get("/config", function(configData) {
+          
+          let tableMax = configData.tables
+          console.log(tableMax);
+        $.get("/APIall", function(data) {
+          if (data) {
+            for(var i=0; i< data.length; i++){
+              $hrmlBlock = createRes(data[i]);
+              if(i<tableMax){
+                $("#reserved").append($hrmlBlock);
+              }else{
+                $("#waiting").append($hrmlBlock);
+              }
             }
           }
-        }
+        });
       });
     });
 
@@ -71,10 +76,6 @@
                 .html("Name: "+currentRes.name+" Seats: "+ currentRes.seats+" Phone: "+currentRes.phone)
     return reservationDiv;
   }
-
-  var TABLE_Num = process.env.NUM_TABLES || 4;
-  console.log("TableNumbers: ",TABLE_Num);
-
   </script>
 </body>
 </html>

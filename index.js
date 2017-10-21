@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var PORT = process.env.PORT || 3000;
 var path = require("path");
-var TABLE_Num = process.env.NUM_TABLES || 6
+var TABLE_Num = {tables: process.env.NUM_TABLES || 4};
 
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,12 +49,13 @@ app.get("/show", function(req, res) {
 app.get("/APIall", function(req, res) {
   res.json(tables);
 });
+app.get("/config", function(req, res) {
+  res.json(TABLE_Num);
+});
 
 //post to retrieve new reservation
 
 app.post("/api/new", function(req, res) {
-  // req.body hosts is equal to the JSON post sent from the user
-  // This works because of our body-parser middleware
   var newReservation = req.body;
   console.log(newReservation);
   tables.push(newReservation);
